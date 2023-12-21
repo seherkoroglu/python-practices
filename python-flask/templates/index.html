@@ -8,7 +8,49 @@
 <body>
     <h1>Ders Programı</h1>
 
- 
-   
+    <form action="{{ url_for('add_instructor') }}" method="post">
+        <label for="name">Adı:</label>
+        <input type="text" name="name" required>
+        <label for="subject">Ders:</label>
+        <input type="text" name="subject" required>
+        <button type="submit">Ekle</button>
+    </form>
+
+    <form action="{{ url_for('add_constraint') }}" method="post">
+        <label for="instructor_id">Hoca:</label>
+        <select name="instructor_id" required>
+            {% for instructor in instructors %}
+                <option value="{{ instructor.id }}">{{ instructor.name }}</option>
+            {% endfor %}
+        </select>
+        <label for="day">Gün:</label>
+        <input type="text" name="day" required>
+        <label for="time">Saat:</label>
+        <input type="text" name="time" required>
+        <button type="submit">Ekle</button>
+    </form>
+
+    <h2>Ders Programı</h2>
+    <table border="1">
+        <tr>
+            <th>Adı</th>
+            <th>Ders</th>
+            <th>Gün</th>
+            <th>Saat</th>
+        </tr>
+        {% for instructor in instructors %}
+            {% for constraint in constraints %}
+                {% if constraint.instructor_id == instructor.id %}
+                    <tr>
+                        <td>{{ instructor.name }}</td>
+                        <td>{{ instructor.subject }}</td>
+                        <td>{{ constraint.day }}</td>
+                        <td>{{ constraint.time }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </table>
 </body>
 </html>
+
